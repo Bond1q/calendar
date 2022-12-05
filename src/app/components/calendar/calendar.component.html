@@ -1,12 +1,12 @@
 <header>
-  <div class="dateNavigation">
-    <div class="monthNavigation">
-      <button mat-icon-button (click)="setMonth(-1)">
+  <div class="date-navigation">
+    <div class="month-navigation">
+      <button mat-icon-button (click)="prevMonth()">
         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="arrow_back_ios"></mat-icon>
       </button>
       <span class="month">{{date | date:'MMMM YYYY'}}</span>
 
-      <button (click)="setMonth(+1)" mat-icon-button>
+      <button (click)="nexMonth()" mat-icon-button>
         <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="arrow_forward_ios"></mat-icon>
       </button>
 
@@ -16,7 +16,7 @@
 
   <button mat-button [matMenuTriggerFor]="filter">Filter by absence types</button>
   <mat-menu #filter="matMenu">
-    <section (click)="$event.stopPropagation()" id="sec" class="filterSection" [formGroup]="toppings">
+    <section (click)="$event.stopPropagation()" [formGroup]="toppings">
       <p *ngFor="let type of absenceTypes">
         <mat-checkbox formControlName={{type}}>{{type| titlecase }}</mat-checkbox>
       </p>
@@ -26,12 +26,13 @@
 
 
 <div class="calendar">
-  <div class="weekDays" *ngFor="let day of days"> {{day}} </div>
+  <div class="week-days" *ngFor="let day of days"> {{day}} </div>
   <div *ngFor="let el of datesInfo" [ngClass]="{notCurrentMonth: !isSameMonth(el.date), today:isToday(el.date)}"
     class="day">
     <span> {{el.date | date:'d' }}</span>
     <p *ngFor="let absence of el.absenceList"
-      [ngClass]="{sick:absence.type=='sick', vacation:absence.type=='vacation'}">{{absence.title}}
+      [ngClass]="{sick:absence.type==getAbsenceType().SICK, vacation:absence.type==getAbsenceType().VACATION}">
+      {{absence.title}}
     </p>
   </div>
 </div>

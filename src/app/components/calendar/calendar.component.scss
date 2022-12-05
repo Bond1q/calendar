@@ -5,11 +5,11 @@ header {
   justify-content: space-between;
   align-items: center;
 
-  .dateNavigation {
+  .date-navigation {
     display: flex;
     align-items: center;
 
-    .monthNavigation {
+    .month-navigation {
       display: flex;
       margin-left: 20px;
       align-items: center;
@@ -43,7 +43,7 @@ header {
     border-right: 1px solid #ccc;
   }
 
-  .weekDays {
+  .week-days {
     background-color: rgb(247, 244, 244);
     display: flex;
     align-items: center;
@@ -84,12 +84,11 @@ header {
       &.vacation {
         background-color: rgb(6, 195, 41);
       }
-
     }
+  }
 
-    .today {
-      border-top: 2px solid rgb(7 164 36);
-    }
+  .today {
+    border-top: 2px solid rgb(7 164 36);
   }
 
 }

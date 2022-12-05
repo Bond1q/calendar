@@ -9,29 +9,28 @@ import {
 	AbsenceTypes,
 } from '../../types/types';
 
-
-//mock date 
+//mock date
 const list: AbsencePeriod[] = [
 	{
-		type: 'sick',
+		type: AbsenceTypes.SICK,
 		dateStart: moment([2022, 11, 4]).toDate(),
 		dateEnd: moment([2022, 11, 9]).toDate(),
 		comment: 'I am ill',
 	},
 	{
-		type: 'vacation',
+		type: AbsenceTypes.VACATION,
 		dateStart: moment([2022, 11, 8]).toDate(),
 		dateEnd: moment([2022, 11, 19]).toDate(),
 		comment: 'Day for chill',
 	},
 	{
-		type: 'sick',
+		type: AbsenceTypes.SICK,
 		dateStart: moment([2023, 1, 8]).toDate(),
 		dateEnd: moment([2023, 1, 16]).toDate(),
 		comment: 'I will be ill',
 	},
 	{
-		type: 'vacation',
+		type: AbsenceTypes.VACATION,
 		dateStart: moment([2023, 2, 10]).toDate(),
 		dateEnd: moment([2023, 2, 20]).toDate(),
 		comment: 'Going to the sea',
@@ -49,18 +48,18 @@ export class CalendarComponent implements OnInit {
 	absenceList = list;
 
 	readonly days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-	readonly absenceTypes: AbsenceTypes[] = ['sick', 'vacation'];
+	readonly absenceTypes = Object.values(AbsenceTypes);
 
-	toppings = this._formBuilder.group(
+	toppings = this.formBuilder.group(
 		this.absenceTypes.reduce((acc: { [key: string]: boolean }, item) => {
 			acc[item] = true;
 			return acc;
 		}, {})
 	);
 
-	constructor(private _formBuilder: FormBuilder) { }
+	constructor(private formBuilder: FormBuilder) { }
 
-	setAbsenceDays(dates: Date[]): DateInfo[] {
+	addAbsenceDays(dates: Date[]): DateInfo[] {
 		return dates.map((date) => {
 			const newAbsenceList = this.absenceList.reduce((prev, item) => {
 				if (
@@ -81,11 +80,18 @@ export class CalendarComponent implements OnInit {
 		});
 	}
 
-	setMonth(inc: number) {
-		const year = moment(this.date).year();
-		const month = moment(this.date).month();
-		this.date = moment([year, month, 1]).add(inc, 'month').toDate();
-		this.datesInfo = this.setAbsenceDays(this.getCalendarDays(this.date));
+	nexMonth() {
+		this.date = moment(this.date).add(1, 'month').toDate();
+		this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
+	}
+
+	prevMonth() {
+		this.date = moment(this.date).subtract(1, 'month').toDate();
+		this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
+	}
+
+	getAbsenceType() {
+		return AbsenceTypes;
 	}
 
 	isSameMonth(date: Date) {
@@ -93,12 +99,12 @@ export class CalendarComponent implements OnInit {
 	}
 
 	isToday(date: Date) {
-		return moment(date).isSame(moment());
+		return moment(date).isSame(moment(), 'day');
 	}
 
 	backToToday() {
 		this.date = moment().toDate();
-		this.datesInfo = this.setAbsenceDays(this.getCalendarDays(this.date));
+		this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
 	}
 
 	getCalendarDays(date = new Date()) {
@@ -123,8 +129,8 @@ export class CalendarComponent implements OnInit {
 
 	ngOnInit(): void {
 		this.toppings.valueChanges.subscribe((values) => {
-			this.datesInfo = this.setAbsenceDays(this.getCalendarDays(this.date));
+			this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
 		});
-		this.datesInfo = this.setAbsenceDays(this.getCalendarDays(this.date));
+		this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
 	}
 }

@@ -1,4 +1,9 @@
-export type AbsenceTypes = 'sick' | 'vacation'
+// export type AbsenceTypes = 'sick' | 'vacation'
+
+export enum AbsenceTypes {
+	SICK = 'sick',
+	VACATION = 'vacation'
+}
 
 export interface AbsencePeriod {
 	type: AbsenceTypes;
