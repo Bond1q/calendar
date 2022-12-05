@@ -1,4 +1,3 @@
-// export type AbsenceTypes = 'sick' | 'vacation'
 
 export enum AbsenceTypes {
 	SICK = 'sick',

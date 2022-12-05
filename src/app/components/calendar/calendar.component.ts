@@ -49,7 +49,7 @@ export class CalendarComponent implements OnInit {
 
 	readonly days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 	readonly absenceTypes = Object.values(AbsenceTypes);
-
+	readonly AbsenceTypes = AbsenceTypes
 	toppings = this.formBuilder.group(
 		this.absenceTypes.reduce((acc: { [key: string]: boolean }, item) => {
 			acc[item] = true;
@@ -80,7 +80,7 @@ export class CalendarComponent implements OnInit {
 		});
 	}
 
-	nexMonth() {
+	nextMonth() {
 		this.date = moment(this.date).add(1, 'month').toDate();
 		this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
 	}
@@ -88,10 +88,6 @@ export class CalendarComponent implements OnInit {
 	prevMonth() {
 		this.date = moment(this.date).subtract(1, 'month').toDate();
 		this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
-	}
-
-	getAbsenceType() {
-		return AbsenceTypes;
 	}
 
 	isSameMonth(date: Date) {
