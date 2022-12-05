@@ -25,7 +25,7 @@
 </header>
 
 
-<div (click)="onTypeClick()" class="calendar">
+<div class="calendar">
   <div class="weekDays" *ngFor="let day of days"> {{day}} </div>
   <div *ngFor="let el of datesInfo" [ngClass]="{notCurrentMonth: !isSameMonth(el.date), today:isToday(el.date)}"
     class="day">
