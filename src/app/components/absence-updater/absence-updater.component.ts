@@ -1,17 +1,8 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import {
-	MatDialog,
-	MAT_DIALOG_DATA,
-	MatDialogRef,
-} from '@angular/material/dialog';
-import { AbsencePeriod } from 'src/app/types/types';
+import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
+import { AbsenceUpdaterComponentInput } from 'src/app/types/types';
 import { FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
-
-export interface AbsenceUpdaterComponentInput extends AbsencePeriod {
-	onDelete: (id: number) => void;
-	onUpdate: (dataStart: Date, dataEnd: Date, id: number) => void;
-}
 
 @Component({
 	selector: 'app-absence-updater',
@@ -19,25 +10,25 @@ export interface AbsenceUpdaterComponentInput extends AbsencePeriod {
 	styleUrls: ['./absence-updater.component.scss'],
 })
 export class AbsenceUpdaterComponent implements OnInit {
-	selected = '';
 	isDisabled = true;
 	dates = this.formBuilder.group({
-		dateStart: [this.data.dateStart, Validators.required],
-		dateEnd: [this.data.dateEnd, Validators.required],
+		dateStart: [this.inputData.dateStart, Validators.required],
+		dateEnd: [this.inputData.dateEnd, Validators.required],
 	});
 
 	constructor(
 		public dialogRef: MatDialogRef<AbsenceUpdaterComponent>,
-		@Inject(MAT_DIALOG_DATA) public data: AbsenceUpdaterComponentInput,
+		@Inject(MAT_DIALOG_DATA) public inputData: AbsenceUpdaterComponentInput,
 		private formBuilder: FormBuilder
 	) { }
 
 	ngOnInit(): void {
 		this.dates.valueChanges.subscribe((value) => {
 			if (
-				(!moment(value.dateStart).isSame(this.data.dateStart, 'day') ||
-					!moment(value.dateEnd).isSame(this.data.dateEnd, 'day')) &&
-				(!this.dates.controls.dateEnd.errors && !this.dates.controls.dateStart.errors)
+				(!moment(value.dateStart).isSame(this.inputData.dateStart, 'day') ||
+					!moment(value.dateEnd).isSame(this.inputData.dateEnd, 'day')) &&
+				!this.dates.controls.dateEnd.errors &&
+				!this.dates.controls.dateStart.errors
 			) {
 				this.isDisabled = false;
 			} else {
@@ -45,12 +36,18 @@ export class AbsenceUpdaterComponent implements OnInit {
 			}
 		});
 	}
+
 	onDeleteHandle(): void {
-		this.data.onDelete(this.data.id);
+		this.inputData.onDelete(this.inputData.id);
 		this.dialogRef.close();
 	}
+
 	onUpdateHandle(): void {
-		this.data.onUpdate(this.dates.value.dateStart!, this.dates.value.dateEnd!, this.data.id);
+		this.inputData.onUpdate(
+			this.dates.value.dateStart!,
+			this.dates.value.dateEnd!,
+			this.inputData.id
+		);
 		this.dialogRef.close();
 	}
 }

@@ -1,54 +1,18 @@
-import { Component, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
-import {
-	MatDialog,
-	MAT_DIALOG_DATA,
-	MatDialogRef,
-} from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 
 import * as moment from 'moment';
 import {
 	AbsencePeriod,
-	AbsencePeriodInCalendar,
 	DateInfo,
+	AbsenceUpdaterComponentInput,
 	AbsenceTypes,
 } from '../../types/types';
-import {
-	AbsenceUpdaterComponent,
-	AbsenceUpdaterComponentInput,
-} from '../absence-updater/absence-updater.component';
 
-//mock date
-const list: AbsencePeriod[] = [
-	{
-		type: AbsenceTypes.SICK,
-		dateStart: moment([2022, 11, 4]).toDate(),
-		dateEnd: moment([2022, 11, 9]).toDate(),
-		comment: 'I am ill',
-		id: 1
-	},
-	{
-		type: AbsenceTypes.VACATION,
-		dateStart: moment([2022, 11, 8]).toDate(),
-		dateEnd: moment([2022, 11, 19]).toDate(),
-		comment: 'Day for chill',
-		id: 2
-	},
-	{
-		type: AbsenceTypes.SICK,
-		dateStart: moment([2023, 1, 8]).toDate(),
-		dateEnd: moment([2023, 1, 16]).toDate(),
-		comment: 'I will be ill',
-		id: 3
-	},
-	{
-		type: AbsenceTypes.VACATION,
-		dateStart: moment([2023, 2, 10]).toDate(),
-		dateEnd: moment([2023, 2, 20]).toDate(),
-		comment: 'Going to the sea',
-		id: 4
-	},
-];
+import { AbsenceUpdaterComponent } from '../absence-updater/absence-updater.component';
+
+import { list } from '../../data';
 
 @Component({
 	selector: 'app-calendar',
@@ -147,22 +111,24 @@ export class CalendarComponent implements OnInit {
 			width: '500px',
 			data: {
 				...absence,
+				//Ці методи будуть у компонені absence updater, коли буде ngrx
 				onDelete: (id: number) => {
-					this.absenceList = this.absenceList.filter(el => el.id !== id);
-					this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
+					this.absenceList = list.filter((el) => el.id !== id);
+					console.log(this.absenceList);
 
+					this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
+					console.log(list);
 				},
 				onUpdate: (dateStart: Date, dateEnd: Date, id: number) => {
-					this.absenceList = this.absenceList.map(el => {
+					this.absenceList = list.map((el) => {
 						if (el.id == id) {
 							el.dateStart = dateStart;
 							el.dateEnd = dateEnd;
 						}
-						return el
-					})
+						return el;
+					});
 					this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
-
-				}
+				},
 			} as AbsenceUpdaterComponentInput,
 		});
 	}
