@@ -9,6 +9,7 @@ export interface AbsencePeriod {
 	dateStart: Date;
 	dateEnd: Date;
 	comment: string;
+	id: number;
 }
 
 export type AbsencePeriodInCalendar = {
@@ -18,5 +19,5 @@ export type AbsencePeriodInCalendar = {
 
 export interface DateInfo {
 	date: Date;
-	absenceList: AbsencePeriodInCalendar[];
+	absenceList: AbsencePeriod[];
 }

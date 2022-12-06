@@ -1,5 +1,10 @@
 import { Component, Output, EventEmitter, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import {
+	MatDialog,
+	MAT_DIALOG_DATA,
+	MatDialogRef,
+} from '@angular/material/dialog';
 
 import * as moment from 'moment';
 import {
@@ -8,6 +13,10 @@ import {
 	DateInfo,
 	AbsenceTypes,
 } from '../../types/types';
+import {
+	AbsenceUpdaterComponent,
+	AbsenceUpdaterComponentInput,
+} from '../absence-updater/absence-updater.component';
 
 //mock date
 const list: AbsencePeriod[] = [
@@ -16,24 +25,28 @@ const list: AbsencePeriod[] = [
 		dateStart: moment([2022, 11, 4]).toDate(),
 		dateEnd: moment([2022, 11, 9]).toDate(),
 		comment: 'I am ill',
+		id: 1
 	},
 	{
 		type: AbsenceTypes.VACATION,
 		dateStart: moment([2022, 11, 8]).toDate(),
 		dateEnd: moment([2022, 11, 19]).toDate(),
 		comment: 'Day for chill',
+		id: 2
 	},
 	{
 		type: AbsenceTypes.SICK,
 		dateStart: moment([2023, 1, 8]).toDate(),
 		dateEnd: moment([2023, 1, 16]).toDate(),
 		comment: 'I will be ill',
+		id: 3
 	},
 	{
 		type: AbsenceTypes.VACATION,
 		dateStart: moment([2023, 2, 10]).toDate(),
 		dateEnd: moment([2023, 2, 20]).toDate(),
 		comment: 'Going to the sea',
+		id: 4
 	},
 ];
 
@@ -49,7 +62,7 @@ export class CalendarComponent implements OnInit {
 
 	readonly days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 	readonly absenceTypes = Object.values(AbsenceTypes);
-	readonly AbsenceTypes = AbsenceTypes
+	readonly AbsenceTypes = AbsenceTypes;
 	toppings = this.formBuilder.group(
 		this.absenceTypes.reduce((acc: { [key: string]: boolean }, item) => {
 			acc[item] = true;
@@ -57,7 +70,7 @@ export class CalendarComponent implements OnInit {
 		}, {})
 	);
 
-	constructor(private formBuilder: FormBuilder) { }
+	constructor(private formBuilder: FormBuilder, public dialog: MatDialog) { }
 
 	addAbsenceDays(dates: Date[]): DateInfo[] {
 		return dates.map((date) => {
@@ -71,10 +84,16 @@ export class CalendarComponent implements OnInit {
 					) &&
 					this.toppings.value[item.type]
 				) {
-					prev.push({ type: item.type, title: item.comment });
+					prev.push({
+						type: item.type,
+						comment: item.comment,
+						dateStart: item.dateStart,
+						dateEnd: item.dateEnd,
+						id: item.id,
+					});
 				}
 				return prev;
-			}, [] as AbsencePeriodInCalendar[]);
+			}, [] as AbsencePeriod[]);
 
 			return { date, absenceList: newAbsenceList };
 		});
@@ -121,6 +140,31 @@ export class CalendarComponent implements OnInit {
 			.find((dt) => {
 				return dt.weekday() === 1;
 			});
+	}
+
+	openDialog(absence: AbsencePeriod): void {
+		const dialogRef = this.dialog.open(AbsenceUpdaterComponent, {
+			width: '500px',
+			data: {
+				...absence,
+				onDelete: (id: number) => {
+					this.absenceList = this.absenceList.filter(el => el.id !== id);
+					this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
+
+				},
+				onUpdate: (dateStart: Date, dateEnd: Date, id: number) => {
+					this.absenceList = this.absenceList.map(el => {
+						if (el.id == id) {
+							el.dateStart = dateStart;
+							el.dateEnd = dateEnd;
+						}
+						return el
+					})
+					this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
+
+				}
+			} as AbsenceUpdaterComponentInput,
+		});
 	}
 
 	ngOnInit(): void {

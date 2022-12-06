@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>Absence period</h1>
+<div mat-dialog-content>
+  <h2>Type of absence:</h2>
+  <p class="absence-field">{{data.type| titlecase}}</p>
+  <mat-divider class="divider1"></mat-divider>
+  <mat-form-field class="date-picker" [formGroup]="dates" appearance="fill" class="example-form-field">
+    <mat-label>Enter a date range</mat-label>
+    <mat-date-range-input [formGroup]="dates" [rangePicker]="picker">
+      <input matStartDate formControlName="dateStart" placeholder="Start date">
+      <input matEndDate formControlName="dateEnd" placeholder="End date">
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+    <mat-error *ngIf="dates.controls.dateStart.hasError('matStartDateInvalid')">Invalid start date</mat-error>
+    <mat-error *ngIf="dates.controls.dateEnd.hasError('matEndDateInvalid')">Invalid end date</mat-error>
+  </mat-form-field>
+  <h2>Note:</h2>
+  <p class="absence-field">{{data.comment| titlecase}}</p>
+</div>
+<mat-divider class="divider2"></mat-divider>
+
+<div class="action-buttons" mat-dialog-actions>
+  <button mat-button (click)="onDeleteHandle()" mat-flat-button color="warn">Delete</button>
+  <button [disabled]="isDisabled" mat-button (click)="onUpdateHandle()" mat-flat-button color="primary">Update</button>
+</div>

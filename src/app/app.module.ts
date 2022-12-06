@@ -12,9 +12,15 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDialogModule } from '@angular/material/dialog';
+import { DialogModule } from '@angular/cdk/dialog';
+import { AbsenceUpdaterComponent } from './components/absence-updater/absence-updater.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatInputModule } from '@angular/material/input';
+import { MatDividerModule } from '@angular/material/divider';
 
 @NgModule({
-	declarations: [AppComponent, CalendarComponent],
+	declarations: [AppComponent, CalendarComponent, AbsenceUpdaterComponent],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
@@ -25,8 +31,12 @@ import { MatDialogModule } from '@angular/material/dialog';
 		MatCheckboxModule,
 		MatMenuModule,
 		MatSelectModule,
-		MatDialogModule
-
+		MatDialogModule,
+		DialogModule,
+		MatDatepickerModule,
+		MatNativeDateModule,
+		MatInputModule,
+		MatDividerModule
 
 	],
 	providers: [],

@@ -30,9 +30,9 @@
   <div *ngFor="let el of datesInfo" [ngClass]="{notCurrentMonth: !isSameMonth(el.date), today:isToday(el.date)}"
     class="day">
     <span> {{el.date | date:'d' }}</span>
-    <p *ngFor="let absence of el.absenceList"
+    <p (click)="openDialog(absence)" *ngFor="let absence of el.absenceList"
       [ngClass]="{sick:absence.type==AbsenceTypes.SICK, vacation:absence.type==AbsenceTypes.VACATION}">
-      {{absence.title}}
+      {{absence.comment}}
     </p>
   </div>
 </div>
