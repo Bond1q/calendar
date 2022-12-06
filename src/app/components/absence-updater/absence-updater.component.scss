@@ -1,4 +1,4 @@
-h2 {
+.absence-title {
   margin-bottom: 2px;
 }
 
@@ -17,15 +17,26 @@ input {
   color: black;
 }
 
-.divider1 {
+.divider-before-date {
   margin: 20px 0;
 }
 
-.divider2 {
+.divider-before-actions {
   margin-bottom: 20px;
 }
 
 .mat-mdc-dialog-actions {
   justify-content: end;
   margin-right: 5px;
+}
+
+.wrap {
+  display: flex;
+  gap: 10px;
+  position: relative;
+
+  .mat-mdc-form-field-error {
+    position: absolute;
+    bottom: 0;
+  }
 }

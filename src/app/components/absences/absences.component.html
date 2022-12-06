@@ -1,7 +1,7 @@
 <div class="wrapper">
   <h2>Absence types</h2>
   <mat-accordion>
-    <mat-expansion-panel *ngFor="let absenceType of absenceTypes">
+    <mat-expansion-panel *ngFor="let absenceType of absenceTypesValues ">
       <mat-expansion-panel-header>
         <mat-panel-title>
           <span [ngClass]="{sick:absenceType==AbsenceTypes.SICK, vacation:absenceType==AbsenceTypes.VACATION}"

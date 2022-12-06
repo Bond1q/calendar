@@ -10,7 +10,7 @@ import * as moment from 'moment';
 })
 export class AbsencesComponent {
 	readonly AbsenceTypes = AbsenceTypes;
-	readonly absenceTypes = Object.values(AbsenceTypes);
+	readonly absenceTypesValues = Object.values(AbsenceTypes);
 
 	readonly absences = list.reduce((prev: any, cur: AbsencePeriod) => {
 		if (!(cur.type in prev)) {
