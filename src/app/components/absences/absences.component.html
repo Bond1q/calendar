@@ -9,10 +9,11 @@
           {{absenceType | titlecase}}
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div class="absence" *ngFor="let absence of absences[absenceType]">
-        <h3>{{absence.title}} <span> {{ absence.daysLeft | daycount}} left</span></h3>
-        <p><span>Passed:</span> <span> {{ absence.passed | daycount}}</span></p>
-        <p><span>Duration:</span> <span>{{ absence.duration | daycount}}</span></p>
+      <div class="absence" *ngFor="let absence of absencesList[absenceType]">
+        <h3 class="absence-block-title">{{absence.title | truncate:15}} <span
+            class="days-left">{{ absence.daysLeft | daycount}}left</span></h3>
+        <p class="absence-block-item"><span>Passed:</span> <span> {{ absence.passed | daycount}}</span></p>
+        <p class="absence-block-item"><span>Duration:</span> <span>{{ absence.duration | daycount}}</span></p>
       </div>
     </mat-expansion-panel>
   </mat-accordion>

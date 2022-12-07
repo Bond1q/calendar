@@ -9,7 +9,7 @@ export interface AbsencePeriod {
 	dateStart: Date;
 	dateEnd: Date;
 	comment: string;
-	id: number;
+	id: string;
 }
 
 export type AbsencePeriodInCalendar = {
@@ -22,7 +22,7 @@ export interface DateInfo {
 	absenceList: AbsencePeriod[];
 }
 
-export interface AbsenceUpdaterComponentInput extends AbsencePeriod {
-	onDelete: (id: number) => void;
-	onUpdate: (dataStart: Date, dataEnd: Date, id: number) => void;
+
+export interface AbsenceReducer {
+	absencePeriods: AbsencePeriod[]
 }

@@ -1,40 +1,50 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { Observable, Subscription, Subject, takeUntil } from 'rxjs';
 
 import * as moment from 'moment';
 import {
 	AbsencePeriod,
 	DateInfo,
-	AbsenceUpdaterComponentInput,
 	AbsenceTypes,
 } from '../../types/types';
 
 import { AbsenceUpdaterComponent } from '../absence-updater/absence-updater.component';
 
-import { list } from '../../data';
+import { Store } from '@ngrx/store';
+import { absencesSelector } from 'src/app/store/selectors/absence.selector';
 
 @Component({
 	selector: 'app-calendar',
 	templateUrl: './calendar.component.html',
 	styleUrls: ['./calendar.component.scss'],
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
 	datesInfo: DateInfo[] = [];
 	date = new Date();
-	absenceList = list;
+	absenceList: AbsencePeriod[] = [];
+	componentDestroyed$: Subject<boolean> = new Subject();
 
+	dialogSubscription: Subscription = new Subscription();
 	readonly days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-	readonly absenceTypes = Object.values(AbsenceTypes);
+	readonly absenceTypesValues = Object.values(AbsenceTypes);
 	readonly AbsenceTypes = AbsenceTypes;
 	toppings = this.formBuilder.group(
-		this.absenceTypes.reduce((acc: { [key: string]: boolean }, item) => {
+		this.absenceTypesValues.reduce((acc: { [key: string]: boolean }, item) => {
 			acc[item] = true;
 			return acc;
 		}, {})
 	);
 
-	constructor(private formBuilder: FormBuilder, public dialog: MatDialog) { }
+	constructor(private formBuilder: FormBuilder, public dialog: MatDialog, private store: Store) {
+		this.store.select(absencesSelector).pipe(takeUntil(this.componentDestroyed$)).subscribe((absences) => {
+			this.absenceList = absences
+			this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
+
+		})
+
+	}
 
 	addAbsenceDays(dates: Date[]): DateInfo[] {
 		return dates.map((date) => {
@@ -109,34 +119,21 @@ export class CalendarComponent implements OnInit {
 	openDialog(absence: AbsencePeriod): void {
 		const dialogRef = this.dialog.open(AbsenceUpdaterComponent, {
 			width: '500px',
-			data: {
-				...absence,
-				//Ці методи будуть у компонені absence updater, коли буде ngrx
-				onDelete: (id: number) => {
-					this.absenceList = list.filter((el) => el.id !== id);
-					console.log(this.absenceList);
-
-					this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
-					console.log(list);
-				},
-				onUpdate: (dateStart: Date, dateEnd: Date, id: number) => {
-					this.absenceList = list.map((el) => {
-						if (el.id == id) {
-							el.dateStart = dateStart;
-							el.dateEnd = dateEnd;
-						}
-						return el;
-					});
-					this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
-				},
-			} as AbsenceUpdaterComponentInput,
+			data: absence,
 		});
+		dialogRef.afterClosed().pipe(takeUntil(this.componentDestroyed$)).subscribe(() => {
+			this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
+		})
 	}
 
 	ngOnInit(): void {
-		this.toppings.valueChanges.subscribe((values) => {
+		this.toppings.valueChanges.pipe(takeUntil(this.componentDestroyed$)).subscribe((values) => {
 			this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
 		});
-		this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
+	}
+
+	ngOnDestroy(): void {
+		this.componentDestroyed$.next(true);
+		this.componentDestroyed$.complete();
 	}
 }

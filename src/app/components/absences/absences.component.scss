@@ -1,17 +1,17 @@
 .wrapper {
-  margin: 45px 30px;
+  margin: 30px 0 0 0;
 
   .absence {
     border-bottom: 1px solid #ccc;
     width: 250px;
     margin-bottom: 10px;
 
-    h3 {
+    .absence-block-title {
       font-weight: 500;
       display: flex;
       justify-content: space-between;
 
-      span {
+      .days-left {
         font-size: 12px;
         font-weight: bold;
         display: block;
@@ -21,7 +21,7 @@
       }
     }
 
-    p {
+    .absence-block-item {
       font-size: 14px;
       display: flex;
       justify-content: space-between;

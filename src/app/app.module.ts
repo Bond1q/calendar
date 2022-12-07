@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ReactiveFormsModule } from '@angular/forms';
-
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { CalendarComponent } from './components/calendar/calendar.component';
@@ -21,9 +20,23 @@ import { MatDividerModule } from '@angular/material/divider';
 import { AbsencesComponent } from './components/absences/absences.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { DayCountPipe } from './pipes/day-count.pipe';
+import { StoreModule } from '@ngrx/store';
+import { reducers } from './store/index';
+import { AbsenceCreatorComponent } from './components/absence-creator/absence-creator.component';
+import { HeaderComponent } from './components/header/header.component';
+import { TruncatePipe } from './pipes/truncate.pipe';
 
 @NgModule({
-	declarations: [AppComponent, CalendarComponent, AbsenceUpdaterComponent, AbsencesComponent, DayCountPipe],
+	declarations: [
+		AppComponent,
+		CalendarComponent,
+		AbsenceUpdaterComponent,
+		AbsencesComponent,
+		DayCountPipe,
+		TruncatePipe,
+		AbsenceCreatorComponent,
+		HeaderComponent,
+	],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
@@ -40,8 +53,8 @@ import { DayCountPipe } from './pipes/day-count.pipe';
 		MatNativeDateModule,
 		MatInputModule,
 		MatDividerModule,
-		MatExpansionModule
-
+		MatExpansionModule,
+		StoreModule.forRoot(reducers),
 	],
 	providers: [],
 	bootstrap: [AppComponent],

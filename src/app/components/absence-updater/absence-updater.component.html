@@ -38,5 +38,6 @@
 
 <div class="action-buttons" mat-dialog-actions>
   <button mat-button (click)="onDeleteHandle()" mat-flat-button color="warn">Delete</button>
-  <button [disabled]="isDisabled" mat-button (click)="onUpdateHandle()" mat-flat-button color="primary">Update</button>
+  <button [disabled]="buttonDisabled" mat-button (click)="onUpdateHandle()" mat-flat-button
+    color="primary">Update</button>
 </div>
