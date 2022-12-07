@@ -1,0 +1,42 @@
+<h1 mat-dialog-title>Absence period</h1>
+<div mat-dialog-content>
+  <h2 class="absence-title">Type of absence:</h2>
+  <p class="absence-field">{{inputData.type| titlecase}}</p>
+  <mat-divider class="divider-before-date"></mat-divider>
+
+  <div class="wrap">
+    <mat-form-field [formGroup]="dates" appearance="fill" class="example-form-field">
+      <mat-label>Choose a start date</mat-label>
+      <input matInput formControlName="dateStart" [matDatepicker]="datepicker">
+      <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
+
+      <mat-datepicker #datepicker>
+        <mat-datepicker-actions>
+          <button mat-button matDatepickerCancel>Cancel</button>
+          <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
+    </mat-form-field>
+    <mat-form-field [formGroup]="dates" appearance="fill" class="example-form-field">
+      <mat-label>Choose an end date</mat-label>
+      <input matInput formControlName="dateEnd" [matDatepicker]="datepicker2">
+      <mat-datepicker-toggle matIconSuffix [for]="datepicker2"></mat-datepicker-toggle>
+      <mat-datepicker #datepicker2>
+        <mat-datepicker-actions>
+          <button mat-button matDatepickerCancel>Cancel</button>
+          <button mat-raised-button color="primary" matDatepickerApply>Apply</button>
+        </mat-datepicker-actions>
+      </mat-datepicker>
+    </mat-form-field>
+    <mat-error *ngIf="dates.hasError('incorrectRange')">IncorrectRange</mat-error>
+
+  </div>
+  <h2>Note:</h2>
+  <p class="absence-field">{{inputData.comment| titlecase}}</p>
+</div>
+<mat-divider class="divider-before-actions"></mat-divider>
+
+<div class="action-buttons" mat-dialog-actions>
+  <button mat-button (click)="onDeleteHandle()" mat-flat-button color="warn">Delete</button>
+  <button [disabled]="isDisabled" mat-button (click)="onUpdateHandle()" mat-flat-button color="primary">Update</button>
+</div>

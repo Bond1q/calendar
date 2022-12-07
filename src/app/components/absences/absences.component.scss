@@ -1,0 +1,59 @@
+.wrapper {
+  margin: 45px 30px;
+
+  .absence {
+    border-bottom: 1px solid #ccc;
+    width: 250px;
+    margin-bottom: 10px;
+
+    h3 {
+      font-weight: 500;
+      display: flex;
+      justify-content: space-between;
+
+      span {
+        font-size: 12px;
+        font-weight: bold;
+        display: block;
+        padding: 1px 10px;
+        background: rgb(196, 219, 236);
+        border-radius: 50px;
+      }
+    }
+
+    p {
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    &:last-child {
+      border-bottom: 0px solid #ccc;
+    }
+  }
+
+  .circle {
+    background-color: red;
+    display: block;
+    width: 7px;
+    height: 7px;
+    border-radius: 100px;
+    margin-right: 5px;
+
+    &.sick {
+      background-color: #b40404;
+    }
+
+    &.vacation {
+      background-color: rgb(6, 195, 41);
+    }
+  }
+
+  .mat-panel-title::before {
+    content: "";
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: green;
+  }
+}
