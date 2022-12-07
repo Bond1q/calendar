@@ -5,7 +5,7 @@ import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators
 import * as moment from 'moment';
 import { Store } from '@ngrx/store';
 import { deleteAbsence, updateAbsence } from './../../store/absenceReducer/absence.action';
-
+import { dateRangeValidator } from '../../shared/date-range-validator'
 @Component({
 	selector: 'app-absence-updater',
 	templateUrl: './absence-updater.component.html',
@@ -16,8 +16,7 @@ export class AbsenceUpdaterComponent implements OnInit {
 	dates = this.formBuilder.group({
 		dateStart: [this.inputData.dateStart, [Validators.required]],
 		dateEnd: [this.inputData.dateEnd, [Validators.required]],
-
-	}, { validator: this.dateValidator });
+	});
 
 	constructor(
 		public dialogRef: MatDialogRef<AbsenceUpdaterComponent>,
@@ -27,13 +26,14 @@ export class AbsenceUpdaterComponent implements OnInit {
 	) { }
 
 	ngOnInit(): void {
+		this.dates.setValidators(dateRangeValidator('dateStart', 'dateEnd'))
 		this.dates.valueChanges.subscribe((value) => {
 
 			if (
 				(!moment(value.dateStart).isSame(this.inputData.dateStart, 'day') ||
 					!moment(value.dateEnd).isSame(this.inputData.dateEnd, 'day')) &&
-				!this.dates.controls['dateEnd'].errors &&
-				!this.dates.controls['dateStart'].errors &&
+				!this.dates.controls.dateEnd.errors &&
+				!this.dates.controls.dateStart.errors &&
 				!this.dates.hasError('incorrectRange')
 			) {
 				this.isDisabled = false;
