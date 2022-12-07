@@ -17,7 +17,7 @@
   <button mat-button [matMenuTriggerFor]="filter">Filter by absence types</button>
   <mat-menu #filter="matMenu">
     <section (click)="$event.stopPropagation()" [formGroup]="toppings">
-      <p *ngFor="let type of absenceTypes">
+      <p *ngFor="let type of absenceTypesValues">
         <mat-checkbox formControlName={{type}}>{{type| titlecase }}</mat-checkbox>
       </p>
     </section>

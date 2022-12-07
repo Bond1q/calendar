@@ -21,6 +21,9 @@ import { MatDividerModule } from '@angular/material/divider';
 import { AbsencesComponent } from './components/absences/absences.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { DayCountPipe } from './pipes/day-count.pipe';
+import { StoreModule } from '@ngrx/store';
+import { absenceReducer } from './store/absenceReducer/absence.reducer';
+import { reducers } from './store/index';
 
 @NgModule({
 	declarations: [AppComponent, CalendarComponent, AbsenceUpdaterComponent, AbsencesComponent, DayCountPipe],
@@ -40,7 +43,8 @@ import { DayCountPipe } from './pipes/day-count.pipe';
 		MatNativeDateModule,
 		MatInputModule,
 		MatDividerModule,
-		MatExpansionModule
+		MatExpansionModule,
+		StoreModule.forRoot(reducers)
 
 	],
 	providers: [],

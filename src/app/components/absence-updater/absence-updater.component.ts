@@ -1,8 +1,10 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { AbsenceUpdaterComponentInput } from 'src/app/types/types';
+import { AbsencePeriod } from 'src/app/types/types';
 import { AbstractControl, FormBuilder, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import * as moment from 'moment';
+import { Store } from '@ngrx/store';
+import { deleteAbsence, updateAbsence } from './../../store/absenceReducer/absence.action';
 
 @Component({
 	selector: 'app-absence-updater',
@@ -19,8 +21,9 @@ export class AbsenceUpdaterComponent implements OnInit {
 
 	constructor(
 		public dialogRef: MatDialogRef<AbsenceUpdaterComponent>,
-		@Inject(MAT_DIALOG_DATA) public inputData: AbsenceUpdaterComponentInput,
-		private formBuilder: FormBuilder
+		@Inject(MAT_DIALOG_DATA) public inputData: AbsencePeriod,
+		private formBuilder: FormBuilder,
+		private store: Store
 	) { }
 
 	ngOnInit(): void {
@@ -41,16 +44,17 @@ export class AbsenceUpdaterComponent implements OnInit {
 	}
 
 	onDeleteHandle(): void {
-		this.inputData.onDelete(this.inputData.id);
+		this.store.dispatch(deleteAbsence({ id: this.inputData.id }))
 		this.dialogRef.close();
 	}
 
 	onUpdateHandle(): void {
-		this.inputData.onUpdate(
-			this.dates.value.dateStart!,
-			this.dates.value.dateEnd!,
-			this.inputData.id
-		);
+		this.store.dispatch(updateAbsence({
+			id: this.inputData.id,
+			dateStart: this.dates.value.dateStart!,
+			dateEnd: this.dates.value.dateEnd!,
+
+		}))
 		this.dialogRef.close();
 	}
 
