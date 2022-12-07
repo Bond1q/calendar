@@ -43,9 +43,9 @@ export class AbsenceCreatorComponent implements OnInit, OnDestroy {
 			type: AbsenceTypes[
 				this.absenceForm.controls.absenceType.value as keyof typeof AbsenceTypes
 			],
-			dateStart: new Date(String(this.absenceForm.controls.dateStart.value)),
-			dateEnd: new Date(String(this.absenceForm.controls.dateEnd.value)),
-			comment: String(this.absenceForm.controls.comment.value),
+			dateStart: new Date(this.absenceForm.controls.dateStart.value!),
+			dateEnd: new Date(this.absenceForm.controls.dateEnd.value!),
+			comment: this.absenceForm.controls.comment.value!,
 		};
 		this.store.dispatch(createAbsence({ absence: newAbsence }));
 		this.dialogRef.close();
