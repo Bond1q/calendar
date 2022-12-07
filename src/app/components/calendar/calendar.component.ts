@@ -37,7 +37,12 @@ export class CalendarComponent implements OnInit, OnDestroy {
 	);
 
 	constructor(private formBuilder: FormBuilder, public dialog: MatDialog, private store: Store) {
-		this.subscription = this.store.select(absencesSelector).subscribe((absences) => (this.absenceList = absences))
+		this.subscription = this.store.select(absencesSelector).subscribe((absences) => {
+			this.absenceList = absences
+			this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
+
+		})
+
 	}
 
 	addAbsenceDays(dates: Date[]): DateInfo[] {
@@ -124,7 +129,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
 		this.toppings.valueChanges.subscribe((values) => {
 			this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
 		});
-		this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
 	}
 
 	ngOnDestroy(): void {

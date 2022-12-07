@@ -32,7 +32,7 @@
     <span> {{el.date | date:'d' }}</span>
     <p (click)="openDialog(absence)" *ngFor="let absence of el.absenceList"
       [ngClass]="{sick:absence.type==AbsenceTypes.SICK, vacation:absence.type==AbsenceTypes.VACATION}">
-      {{absence.comment}}
+      {{absence.comment  | truncate:20}}
     </p>
   </div>
 </div>

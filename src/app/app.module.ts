@@ -22,11 +22,22 @@ import { AbsencesComponent } from './components/absences/absences.component';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { DayCountPipe } from './pipes/day-count.pipe';
 import { StoreModule } from '@ngrx/store';
-import { absenceReducer } from './store/absenceReducer/absence.reducer';
 import { reducers } from './store/index';
+import { AbsenceCreatorComponent } from './components/absence-creator/absence-creator.component';
+import { HeaderComponent } from './components/header/header.component';
+import { TruncatePipe } from './pipes/truncate.pipe';
 
 @NgModule({
-	declarations: [AppComponent, CalendarComponent, AbsenceUpdaterComponent, AbsencesComponent, DayCountPipe],
+	declarations: [
+		AppComponent,
+		CalendarComponent,
+		AbsenceUpdaterComponent,
+		AbsencesComponent,
+		DayCountPipe,
+		TruncatePipe,
+		AbsenceCreatorComponent,
+		HeaderComponent,
+	],
 	imports: [
 		BrowserModule,
 		AppRoutingModule,
@@ -44,8 +55,7 @@ import { reducers } from './store/index';
 		MatInputModule,
 		MatDividerModule,
 		MatExpansionModule,
-		StoreModule.forRoot(reducers)
-
+		StoreModule.forRoot(reducers),
 	],
 	providers: [],
 	bootstrap: [AppComponent],
