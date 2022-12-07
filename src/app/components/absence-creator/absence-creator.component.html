@@ -3,8 +3,8 @@
   <h2 class="absence-title">What type of absence?</h2>
   <mat-form-field [formGroup]="absenceForm" class="absence-type-form" appearance="fill">
     <mat-label>Type of absence</mat-label>
-    <mat-select formControlName="absenceType" required [(value)]="selectedType">
-      <mat-option [value]="option" *ngFor="let option of types">{{ option| titlecase}}</mat-option>
+    <mat-select formControlName="absenceType" required>
+      <mat-option [value]="option" *ngFor="let option of absenceTypesValues">{{ option| titlecase}}</mat-option>
     </mat-select>
 
   </mat-form-field>
@@ -49,5 +49,5 @@
 
 <div class="action-buttons" mat-dialog-actions>
   <button mat-stroked-button (click)="onClose()" mat-flat-button color="basic">Cancel</button>
-  <button [disabled]="isDisabled" mat-button (click)="onRequest()" mat-flat-button color="primary">Request</button>
+  <button [disabled]="buttonDisabled" mat-button (click)="onRequest()" mat-flat-button color="primary">Request</button>
 </div>

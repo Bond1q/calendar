@@ -1,57 +1,38 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import { AbsenceTypes } from 'src/app/types/types';
-import {
-	AbstractControl,
-	FormBuilder,
-	ValidationErrors,
-	Validators,
-} from '@angular/forms';
+import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { Store } from '@ngrx/store';
-import { createAbsence } from './../../store/absenceReducer/absence.action';
+import { createAbsence } from '../../store/absence-reducer/absence.action';
 import { dateRangeValidator } from '../../shared/date-range-validator';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
 	selector: 'app-absence-creator',
 	templateUrl: './absence-creator.component.html',
 	styleUrls: ['./absence-creator.component.scss'],
 })
-export class AbsenceCreatorComponent {
-	isDisabled = true;
-	absenceForm = this.formBuilder.group({
-		absenceType: ['', [Validators.required]],
-		dateStart: ['', [Validators.required]],
-		dateEnd: ['', [Validators.required]],
-		comment: ['', [Validators.required]],
-	});
+export class AbsenceCreatorComponent implements OnInit, OnDestroy {
+	buttonDisabled = true;
+	absenceForm = this.formBuilder.group(
+		{
+			absenceType: ['', [Validators.required]],
+			dateStart: ['', [Validators.required]],
+			dateEnd: ['', [Validators.required]],
+			comment: ['', [Validators.required]],
+		},
+		{ validators: dateRangeValidator('dateStart', 'dateEnd') }
+	);
 
-	types = Object.keys(AbsenceTypes);
-	selectedType = '';
+	absenceTypesValues = Object.keys(AbsenceTypes);
+	componentDestroyed$: Subject<boolean> = new Subject();
+
 	constructor(
 		public dialogRef: MatDialogRef<AbsenceCreatorComponent>,
 		private formBuilder: FormBuilder,
 		private store: Store
 	) { }
-
-	ngOnInit(): void {
-		this.absenceForm.setValidators(dateRangeValidator('dateStart', 'dateEnd'));
-		this.absenceForm.valueChanges.subscribe((value) => {
-			console.log(this.absenceForm.controls.absenceType.value);
-
-			if (
-				!this.absenceForm.controls.dateEnd.errors &&
-				!this.absenceForm.controls.absenceType.errors &&
-				!this.absenceForm.controls.comment.errors &&
-				!this.absenceForm.controls.dateStart.errors &&
-				!this.absenceForm.hasError('incorrectRange')
-			) {
-				this.isDisabled = false;
-			} else {
-				this.isDisabled = true;
-			}
-		});
-	}
 
 	onClose(): void {
 		this.dialogRef.close();
@@ -77,5 +58,22 @@ export class AbsenceCreatorComponent {
 			return { incorrectRange: true };
 		}
 		return null;
+	}
+
+	ngOnInit(): void {
+		this.absenceForm.valueChanges
+			.pipe(takeUntil(this.componentDestroyed$))
+			.subscribe((value) => {
+				if (this.absenceForm.valid) {
+					this.buttonDisabled = false;
+				} else {
+					this.buttonDisabled = true;
+				}
+			});
+	}
+
+	ngOnDestroy(): void {
+		this.componentDestroyed$.next(true);
+		this.componentDestroyed$.complete();
 	}
 }

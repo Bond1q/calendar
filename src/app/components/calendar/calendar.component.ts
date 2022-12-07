@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, Subject, takeUntil } from 'rxjs';
 
 import * as moment from 'moment';
 import {
@@ -13,7 +13,7 @@ import {
 import { AbsenceUpdaterComponent } from '../absence-updater/absence-updater.component';
 
 import { Store } from '@ngrx/store';
-import { absencesSelector } from 'src/app/store/absenceReducer/absence.selector';
+import { absencesSelector } from 'src/app/store/selectors/absence.selector';
 
 @Component({
 	selector: 'app-calendar',
@@ -24,7 +24,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
 	datesInfo: DateInfo[] = [];
 	date = new Date();
 	absenceList: AbsencePeriod[] = [];
-	subscription: Subscription;
+	componentDestroyed$: Subject<boolean> = new Subject();
+
 	dialogSubscription: Subscription = new Subscription();
 	readonly days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 	readonly absenceTypesValues = Object.values(AbsenceTypes);
@@ -37,7 +38,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 	);
 
 	constructor(private formBuilder: FormBuilder, public dialog: MatDialog, private store: Store) {
-		this.subscription = this.store.select(absencesSelector).subscribe((absences) => {
+		this.store.select(absencesSelector).pipe(takeUntil(this.componentDestroyed$)).subscribe((absences) => {
 			this.absenceList = absences
 			this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
 
@@ -120,19 +121,19 @@ export class CalendarComponent implements OnInit, OnDestroy {
 			width: '500px',
 			data: absence,
 		});
-		this.dialogSubscription = dialogRef.afterClosed().subscribe(() => {
+		dialogRef.afterClosed().pipe(takeUntil(this.componentDestroyed$)).subscribe(() => {
 			this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
 		})
 	}
 
 	ngOnInit(): void {
-		this.toppings.valueChanges.subscribe((values) => {
+		this.toppings.valueChanges.pipe(takeUntil(this.componentDestroyed$)).subscribe((values) => {
 			this.datesInfo = this.addAbsenceDays(this.getCalendarDays(this.date));
 		});
 	}
 
 	ngOnDestroy(): void {
-		this.subscription.unsubscribe()
-		this.dialogSubscription.unsubscribe()
+		this.componentDestroyed$.next(true);
+		this.componentDestroyed$.complete();
 	}
 }

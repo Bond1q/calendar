@@ -1,4 +1,4 @@
-<header>
+<header class="header">
   <div class="date-navigation">
     <div class="month-navigation">
       <button mat-icon-button (click)="prevMonth()">
@@ -29,8 +29,8 @@
   <div class="week-days" *ngFor="let day of days"> {{day}} </div>
   <div *ngFor="let el of datesInfo" [ngClass]="{notCurrentMonth: !isSameMonth(el.date), today:isToday(el.date)}"
     class="day">
-    <span> {{el.date | date:'d' }}</span>
-    <p (click)="openDialog(absence)" *ngFor="let absence of el.absenceList"
+    <span class="date"> {{el.date | date:'d' }}</span>
+    <p class="absence" (click)="openDialog(absence)" *ngFor="let absence of el.absenceList"
       [ngClass]="{sick:absence.type==AbsenceTypes.SICK, vacation:absence.type==AbsenceTypes.VACATION}">
       {{absence.comment  | truncate:20}}
     </p>

@@ -2,7 +2,7 @@ import { Component, OnDestroy } from '@angular/core';
 import { AbsenceTypes, AbsencePeriod } from 'src/app/types/types';
 import * as moment from 'moment';
 import { Store } from '@ngrx/store';
-import { absencesSelector } from 'src/app/store/absenceReducer/absence.selector';
+import { absencesSelector } from 'src/app/store/selectors/absence.selector';
 import { Subscription } from 'rxjs';
 
 interface AbsenceList {
