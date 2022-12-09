@@ -26,40 +26,35 @@ export class AbsencesComponent implements OnDestroy {
 	absencesList: AbsenceList = {};
 
 	constructor(private store: Store) {
-		this.subscription = this.store
-			.select(absencesSelector)
-			.subscribe((data) => {
-				this.absencesList = data.reduce((prev: any, cur: AbsencePeriod) => {
-					if (!(cur.type in prev)) {
-						prev[cur.type] = [];
-					}
-					const differBetweenTodayAndAbsenceStart = moment().diff(moment(cur.dateStart), 'days');
-					let passed = 0;
+		this.subscription = this.store.select(absencesSelector).subscribe((data) => {
+			this.absencesList = data.reduce((prev: any, cur: AbsencePeriod) => {
+				if (!(cur.type in prev)) {
+					prev[cur.type] = [];
+				}
+				const differBetweenTodayAndAbsenceStart = moment().diff(moment(cur.dateStart), 'days');
+				let passed = 0;
 
-					const duration =
-						moment(cur.dateEnd).diff(moment(cur.dateStart), 'days') + 1;
+				const duration = moment(cur.dateEnd).diff(moment(cur.dateStart), 'days') + 1;
 
-					if (differBetweenTodayAndAbsenceStart > 0) {
-						if (duration < differBetweenTodayAndAbsenceStart) {
-							passed = duration;
-						} else {
-							passed = differBetweenTodayAndAbsenceStart
-						}
-					} else {
-						passed = 0
-					}
+				if (differBetweenTodayAndAbsenceStart > 0 && duration < differBetweenTodayAndAbsenceStart) {
+					passed = duration;
+				} else if (differBetweenTodayAndAbsenceStart <= 0) {
+					passed = 0;
+				} else {
+					passed = differBetweenTodayAndAbsenceStart;
+				}
 
-					const daysLeft = duration - passed;
+				const daysLeft = duration - passed;
 
-					prev[cur.type].push({
-						title: cur.comment,
-						passed: passed,
-						duration: duration,
-						daysLeft: daysLeft > 0 ? daysLeft : 0,
-					});
-					return prev;
-				}, {});
-			});
+				prev[cur.type].push({
+					title: cur.comment,
+					passed: passed,
+					duration: duration,
+					daysLeft: daysLeft > 0 ? daysLeft : 0,
+				});
+				return prev;
+			}, {});
+		});
 	}
 
 	ngOnDestroy(): void {
