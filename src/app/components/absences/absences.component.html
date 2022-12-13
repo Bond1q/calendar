@@ -11,7 +11,7 @@
       </mat-expansion-panel-header>
       <div class="absence" *ngFor="let absence of absencesList[absenceType]">
         <h3 class="absence-block-title">{{absence.title | truncate:15}} <span
-            class="days-left">{{ absence.daysLeft | daycount}}left</span></h3>
+            class="days-left">{{ absence.daysLeft | daycount}} left</span></h3>
         <p class="absence-block-item"><span>Passed:</span> <span> {{ absence.passed | daycount}}</span></p>
         <p class="absence-block-item"><span>Duration:</span> <span>{{ absence.duration | daycount}}</span></p>
       </div>

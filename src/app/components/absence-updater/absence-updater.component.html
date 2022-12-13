@@ -29,6 +29,8 @@
       </mat-datepicker>
     </mat-form-field>
     <mat-error *ngIf="dates.hasError('incorrectRange')">IncorrectRange</mat-error>
+    <mat-error *ngIf="dates.hasError('absencesOverlapped')">Absence overlapped</mat-error>
+
 
   </div>
   <h2>Note:</h2>

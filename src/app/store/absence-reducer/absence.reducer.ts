@@ -8,6 +8,13 @@ const initialState: AbsenceReducer = {
 	absencePeriods: [
 		{
 			type: AbsenceTypes.SICK,
+			dateStart: moment([2022, 11, 1]).toDate(),
+			dateEnd: moment([2022, 11, 3]).toDate(),
+			comment: 'Was',
+			id: uuid()
+		},
+		{
+			type: AbsenceTypes.SICK,
 			dateStart: moment([2022, 11, 4]).toDate(),
 			dateEnd: moment([2022, 11, 9]).toDate(),
 			comment: 'I am ill',
@@ -15,7 +22,7 @@ const initialState: AbsenceReducer = {
 		},
 		{
 			type: AbsenceTypes.VACATION,
-			dateStart: moment([2022, 11, 8]).toDate(),
+			dateStart: moment([2022, 11, 10]).toDate(),
 			dateEnd: moment([2022, 11, 19]).toDate(),
 			comment: 'Day for chill',
 			id: uuid()

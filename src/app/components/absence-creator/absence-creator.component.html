@@ -8,6 +8,9 @@
     </mat-select>
 
   </mat-form-field>
+  <mat-error *ngIf="absenceForm.hasError('incorrectTypeForPast')">You can only choose type "Sick" for the
+    past</mat-error>
+
   <h2 class="absence-title">From - To</h2>
 
   <div class="wrap">
@@ -35,6 +38,7 @@
       </mat-datepicker>
     </mat-form-field>
     <mat-error *ngIf="absenceForm.hasError('incorrectRange')">IncorrectRange</mat-error>
+    <mat-error *ngIf="absenceForm.hasError('absencesOverlapped')">Absence overlapped</mat-error>
 
   </div>
   <h2 class="absence-title">Comment:</h2>

@@ -1,12 +1,13 @@
 import { Component, Inject, OnInit, OnDestroy } from '@angular/core';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { AbsencePeriod } from 'src/app/types/types';
-import { AbstractControl, FormBuilder, ValidationErrors, Validators } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import * as moment from 'moment';
 import { Store } from '@ngrx/store';
 import { deleteAbsence, updateAbsence, } from '../../store/absence-reducer/absence.action';
 import { dateRangeValidator } from '../../shared/date-range-validator';
 import { Subject, takeUntil } from 'rxjs';
+import { absencesSelector } from 'src/app/store/selectors/absence.selector';
 @Component({
 	selector: 'app-absence-updater',
 	templateUrl: './absence-updater.component.html',
@@ -14,12 +15,16 @@ import { Subject, takeUntil } from 'rxjs';
 })
 export class AbsenceUpdaterComponent implements OnInit, OnDestroy {
 	buttonDisabled = true;
+	absenceList: AbsencePeriod[] = [];
+
 	dates = this.formBuilder.group(
 		{
 			dateStart: [this.inputData.dateStart, [Validators.required]],
 			dateEnd: [this.inputData.dateEnd, [Validators.required]],
 		},
-		{ validators: dateRangeValidator('dateStart', 'dateEnd') }
+		{
+			validators: dateRangeValidator('dateStart', 'dateEnd', this.absenceList, this.inputData.id)
+		}
 	);
 	componentDestroyed$: Subject<boolean> = new Subject();
 
@@ -28,7 +33,13 @@ export class AbsenceUpdaterComponent implements OnInit, OnDestroy {
 		@Inject(MAT_DIALOG_DATA) public inputData: AbsencePeriod,
 		private formBuilder: FormBuilder,
 		private store: Store
-	) { }
+	) {
+
+		this.store.select(absencesSelector).pipe(takeUntil(this.componentDestroyed$)).subscribe((absences) => {
+			this.absenceList = absences
+			this.dates.addValidators(dateRangeValidator('dateStart', 'dateEnd', this.absenceList, this.inputData.id));
+		})
+	}
 
 	ngOnInit(): void {
 		this.dates.valueChanges
@@ -38,6 +49,7 @@ export class AbsenceUpdaterComponent implements OnInit, OnDestroy {
 					(!moment(value.dateStart).isSame(this.inputData.dateStart, 'day') ||
 						!moment(value.dateEnd).isSame(this.inputData.dateEnd, 'day')) &&
 					this.dates.valid
+
 				) {
 					this.buttonDisabled = false;
 				} else {
@@ -62,21 +74,9 @@ export class AbsenceUpdaterComponent implements OnInit, OnDestroy {
 		this.dialogRef.close();
 	}
 
-	dateValidator(control: AbstractControl): ValidationErrors | null {
-		const dateStart = control.get('dateStart')?.value;
-		const dateEnd = control.get('dateEnd')?.value;
-		if (moment(dateStart).isAfter(dateEnd)) {
-			return { incorrectRange: true };
-		}
-		const date = control.value;
-		if (!moment(date).isValid()) {
-			return { incorrectDate: true };
-		}
-		return null;
-	}
-
 	ngOnDestroy(): void {
 		this.componentDestroyed$.next(true);
 		this.componentDestroyed$.complete();
+
 	}
 }
