@@ -3,7 +3,7 @@ import { AbsenceTypes, AbsencePeriod } from 'src/app/types/types';
 import * as moment from 'moment';
 import { Store } from '@ngrx/store';
 import { absencesSelector } from 'src/app/store/selectors/absence.selector';
-import { Subscription } from 'rxjs';
+import { Subscription, Subject, takeUntil } from 'rxjs';
 
 interface AbsenceList {
 	[key: string]: Array<{
@@ -22,11 +22,11 @@ interface AbsenceList {
 export class AbsencesComponent implements OnDestroy {
 	readonly AbsenceTypes = AbsenceTypes;
 	readonly absenceTypesValues = Object.values(AbsenceTypes);
-	subscription: Subscription;
 	absencesList: AbsenceList = {};
+	componentDestroyed$: Subject<boolean> = new Subject();
 
 	constructor(private store: Store) {
-		this.subscription = this.store.select(absencesSelector).subscribe((data) => {
+		this.store.select(absencesSelector).pipe(takeUntil(this.componentDestroyed$)).subscribe((data) => {
 			this.absencesList = data.reduce((prev: any, cur: AbsencePeriod) => {
 				if (!(cur.type in prev)) {
 					prev[cur.type] = [];
@@ -58,6 +58,7 @@ export class AbsencesComponent implements OnDestroy {
 	}
 
 	ngOnDestroy(): void {
-		this.subscription.unsubscribe();
+		this.componentDestroyed$.next(true);
+		this.componentDestroyed$.complete();
 	}
 }
