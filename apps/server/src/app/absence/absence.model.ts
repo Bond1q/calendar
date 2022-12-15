@@ -1,18 +1,7 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { AbsenceTypes, Absence as IAbsence } from 'types/index';
 
-export enum AbsenceTypes {
-	SICK = 'sick',
-	VACATION = 'vacation',
-}
-
-export interface IAbsence {
-	type: AbsenceTypes;
-	dateStart: Date;
-	dateEnd: Date;
-	comment: string;
-	id: string;
-}
-
+AbsenceTypes
 @Entity()
 export class Absence implements IAbsence {
 	@Column()

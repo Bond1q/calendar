@@ -15,7 +15,7 @@ export class AbsenceService {
 	}
 
 	createAbsence(absence: Omit<AbsencePeriod, 'id'>) {
-		return this.http.post<{ id: string }>(this.url, { ...absence }).pipe(
+		return this.http.post<AbsencePeriod>(this.url, { ...absence }).pipe(
 			catchError((error) => {
 				console.error(error);
 				return throwError(() => new Error(error));
@@ -24,7 +24,7 @@ export class AbsenceService {
 	}
 
 	updateAbsence(id: string, absence: Pick<AbsencePeriod, 'dateStart' | 'dateEnd'>) {
-		return this.http.put<{ id: string }>(this.url + `/${id}`, { ...absence }).pipe(
+		return this.http.put<AbsencePeriod>(this.url + `/${id}`, { ...absence }).pipe(
 			catchError((error) => {
 				console.error(error);
 				return throwError(() => new Error(error));
@@ -33,7 +33,7 @@ export class AbsenceService {
 	}
 
 	deleteAbsence(id: string) {
-		return this.http.delete<{ id: string }>(this.url + `/${id}`).pipe(
+		return this.http.delete<AbsencePeriod>(this.url + `/${id}`).pipe(
 			catchError((error) => {
 				console.error(error);
 				return throwError(() => new Error(error));

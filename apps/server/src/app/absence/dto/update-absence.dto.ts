@@ -1,8 +1,7 @@
-import { IsDate, IsDateString, IsEnum, IsNumber, IsString, IsUUID, MaxLength, MinLength } from "class-validator";
-import { IAbsence, AbsenceTypes } from "../absence.model";
-import { Type } from 'class-transformer';
+import { IsDateString } from "class-validator";
+import { Absence as IAbsence } from 'types/index';
 
-export class UpdateAbsenceDto implements Omit<IAbsence, 'comment' | 'type' | 'id'> {
+export class UpdateAbsenceDto implements Pick<IAbsence, 'dateStart' | 'dateEnd'> {
 	@IsDateString()
 	readonly dateStart: Date;
 
