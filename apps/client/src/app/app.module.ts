@@ -25,38 +25,44 @@ import { reducers } from './store/index';
 import { AbsenceCreatorComponent } from './components/absence-creator/absence-creator.component';
 import { HeaderComponent } from './components/header/header.component';
 import { TruncatePipe } from './pipes/truncate.pipe';
+import { EffectsModule } from '@ngrx/effects';
+import { AbsenceEffect } from './store/effects/absence.effects';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    CalendarComponent,
-    AbsenceUpdaterComponent,
-    AbsencesComponent,
-    DayCountPipe,
-    TruncatePipe,
-    AbsenceCreatorComponent,
-    HeaderComponent,
-  ],
-  imports: [
-    BrowserModule,
-    AppRoutingModule,
-    BrowserAnimationsModule,
-    ReactiveFormsModule,
-    MatButtonModule,
-    MatIconModule,
-    MatCheckboxModule,
-    MatMenuModule,
-    MatSelectModule,
-    MatDialogModule,
-    DialogModule,
-    MatDatepickerModule,
-    MatNativeDateModule,
-    MatInputModule,
-    MatDividerModule,
-    MatExpansionModule,
-    StoreModule.forRoot(reducers),
-  ],
-  providers: [],
-  bootstrap: [AppComponent],
+	declarations: [
+		AppComponent,
+		CalendarComponent,
+		AbsenceUpdaterComponent,
+		AbsencesComponent,
+		DayCountPipe,
+		TruncatePipe,
+		AbsenceCreatorComponent,
+		HeaderComponent,
+	],
+	imports: [
+		BrowserModule,
+		AppRoutingModule,
+		BrowserAnimationsModule,
+		ReactiveFormsModule,
+		MatButtonModule,
+		MatIconModule,
+		MatCheckboxModule,
+		MatMenuModule,
+		MatSelectModule,
+		MatDialogModule,
+		DialogModule,
+		MatDatepickerModule,
+		MatNativeDateModule,
+		MatInputModule,
+		MatDividerModule,
+		MatExpansionModule,
+		HttpClientModule,
+		StoreModule.forRoot(reducers),
+		EffectsModule.forRoot([AbsenceEffect])
+	],
+	providers: [],
+	bootstrap: [AppComponent],
+
 })
-export class AppModule {}
+export class AppModule { }

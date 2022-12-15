@@ -2,20 +2,12 @@
   <div class="date-navigation">
     <div class="month-navigation">
       <button mat-icon-button (click)="prevMonth()">
-        <mat-icon
-          aria-hidden="false"
-          aria-label="Example home icon"
-          fontIcon="arrow_back_ios"
-        ></mat-icon>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="arrow_back_ios"></mat-icon>
       </button>
       <span class="month">{{ date | date : 'MMMM YYYY' }}</span>
 
       <button (click)="nextMonth()" mat-icon-button>
-        <mat-icon
-          aria-hidden="false"
-          aria-label="Example home icon"
-          fontIcon="arrow_forward_ios"
-        ></mat-icon>
+        <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="arrow_forward_ios"></mat-icon>
       </button>
     </div>
     <button (click)="backToToday()" mat-flat-button>Today</button>
@@ -37,25 +29,16 @@
 
 <div class="calendar">
   <div class="week-days" *ngFor="let day of days">{{ day }}</div>
-  <div
-    *ngFor="let el of datesInfo"
-    [ngClass]="{
+  <div *ngFor="let el of datesInfo" [ngClass]="{
       notCurrentMonth: !isSameMonth(el.date),
       today: isToday(el.date)
-    }"
-    class="day"
-  >
+    }" class="day">
     <span class="date"> {{ el.date | date : 'd' }}</span>
-    <p
-      class="absence"
-      (click)="openDialog(absence)"
-      *ngFor="let absence of el.absenceList"
-      [ngClass]="{
+    <p class="absence" (click)="openDialog(absence)" *ngFor="let absence of el.absenceList" [ngClass]="{
         sick: absence.type == AbsenceTypes.SICK,
         vacation: absence.type == AbsenceTypes.VACATION
-      }"
-    >
-      {{ absence.comment | truncate : 15 }}
+      }">
+      {{ absence.comment | truncate : 15 | titlecase}}
     </p>
   </div>
 </div>
