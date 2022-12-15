@@ -1,5 +1,5 @@
 import { createAction, props } from '@ngrx/store';
-import { AbsencePeriod } from '../../types/types';
+import { Absence as AbsencePeriod } from 'shared/types';
 
 export const deleteAbsence = createAction(
 	'[Absence] delete',

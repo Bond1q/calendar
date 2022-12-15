@@ -1,6 +1,6 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
 import * as moment from 'moment';
-import { AbsencePeriod } from '../types/types';
+import { Absence as AbsencePeriod } from 'shared/types';
 
 export const dateRangeValidator = (
 	field1: string,

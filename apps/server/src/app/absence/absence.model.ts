@@ -1,10 +1,9 @@
 import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
-import { AbsenceTypes, Absence as IAbsence } from 'types/index';
+import { AbsenceTypes, Absence as IAbsence } from 'shared/types';
 
-AbsenceTypes
 @Entity()
 export class Absence implements IAbsence {
-	@Column()
+	@Column({ type: 'enum', enum: AbsenceTypes })
 	type: AbsenceTypes;
 
 	@Column()

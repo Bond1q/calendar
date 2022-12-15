@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { AbsencePeriod } from '../types/types';
+import { Absence as AbsencePeriod } from 'shared/types';
 import { Observable, catchError, throwError } from 'rxjs';
 
 @Injectable({

@@ -4,7 +4,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { Observable, Subscription, Subject, takeUntil } from 'rxjs';
 
 import * as moment from 'moment';
-import { AbsencePeriod, DateInfo, AbsenceTypes } from '../../types/types';
+import { DateInfo } from '../../types/types';
+import { AbsenceTypes, Absence as AbsencePeriod } from 'shared/types';
 
 import { AbsenceUpdaterComponent } from '../absence-updater/absence-updater.component';
 

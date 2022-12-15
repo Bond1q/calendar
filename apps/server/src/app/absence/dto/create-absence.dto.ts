@@ -1,5 +1,5 @@
 import { IsDateString, IsEnum, IsString, MaxLength, MinLength } from "class-validator";
-import { AbsenceTypes, Absence as IAbsence } from 'types/index';
+import { AbsenceTypes, Absence as IAbsence } from 'shared/types';
 
 export class CreateAbsenceDto implements Omit<IAbsence, 'id'> {
 	@IsEnum(AbsenceTypes, { message: "Incorrect absence type" })

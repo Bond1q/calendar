@@ -19,7 +19,9 @@
     "module": "ES2022",
     "useDefineForClassFields": false,
     "lib": ["ES2022", "dom"],
-    "paths": {},
+    "paths": {
+      "shared/types": ["libs/shared/types/src/index.ts"]
+    },
     "rootDir": "."
   },
   "angularCompilerOptions": {

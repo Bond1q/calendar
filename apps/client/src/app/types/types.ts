@@ -1,16 +1,4 @@
-
-export enum AbsenceTypes {
-	SICK = 'sick',
-	VACATION = 'vacation',
-}
-
-export interface AbsencePeriod {
-	type: AbsenceTypes;
-	dateStart: Date;
-	dateEnd: Date;
-	comment: string;
-	id: string;
-}
+import { AbsenceTypes, Absence as AbsencePeriod } from 'shared/types';
 
 export type AbsencePeriodInCalendar = {
 	type: AbsencePeriod['type'];
