@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "nx",
-    "start": "nx serve",
+    "start": "node dist/apps/server/main",
     "build": "nx build",
     "watch": "nx build --watch --configuration development",
     "test": "nx test",
