@@ -453,6 +453,7 @@ function bootstrap() {
     return tslib_1.__awaiter(this, void 0, void 0, function* () {
         const app = yield core_1.NestFactory.create(app_module_1.AppModule, { cors: true });
         const port = process.env['PORT'] || 3333;
+        app.setGlobalPrefix('calendar-server.netlify.app');
         yield app.listen(port);
         common_1.Logger.log(`🚀 Application is running on: http://localhost:${port}`);
     });
