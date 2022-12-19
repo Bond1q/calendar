@@ -10,7 +10,6 @@
     "postinstall": "node ./decorate-angular-cli.js",
     "start-client": "nx serve client",
     "start-server": "nx serve server"
-
   },
   "private": true,
   "dependencies": {
