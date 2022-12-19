@@ -7,7 +7,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 	providedIn: 'root',
 })
 export class AbsenceService {
-	url = 'http://localhost:5000/absence';
+	url = 'https://calendar-server.up.railway.app/absence';
 	constructor(private http: HttpClient) { }
 
 	getAllAbsences(): Observable<AbsencePeriod[]> {
