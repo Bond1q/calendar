@@ -30,6 +30,7 @@ import { AbsenceEffect } from './store/effects/absence.effects';
 import { HttpClientModule } from '@angular/common/http';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { FirstLetterCapitalizePipe } from './pipes/first-letter-capitalize.pipe';
 
 @NgModule({
 	declarations: [
@@ -39,6 +40,7 @@ import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 		AbsencesComponent,
 		DayCountPipe,
 		TruncatePipe,
+		FirstLetterCapitalizePipe,
 		AbsenceCreatorComponent,
 		HeaderComponent,
 	],
