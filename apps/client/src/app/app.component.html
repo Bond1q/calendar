@@ -1,7 +1,11 @@
-<div class="wrapper">
+<div class="wrapper" [ngClass]="{loading:isLoading}">
   <app-header></app-header>
   <main class="main">
     <app-calendar></app-calendar>
     <app-absences></app-absences>
   </main>
+</div>
+
+<div *ngIf="isLoading" class="loader">
+  <mat-spinner *ngIf="isLoading"></mat-spinner>
 </div>

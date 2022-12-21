@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { Observable, Subscription, Subject, takeUntil } from 'rxjs';
+import { Subscription, Subject, takeUntil } from 'rxjs';
 
 import * as moment from 'moment';
 import { DateInfo } from '../../types/types';
@@ -10,7 +10,7 @@ import { AbsenceTypes, Absence as AbsencePeriod } from 'shared/types';
 import { AbsenceUpdaterComponent } from '../absence-updater/absence-updater.component';
 
 import { Store } from '@ngrx/store';
-import { absencesSelector } from '../../store/selectors/absence.selector';
+import { absencesSelector, loadingSelector } from '../../store/selectors/absence.selector';
 import { loadAbsences } from './../../store/absence-reducer/absence.action';
 
 @Component({
@@ -23,7 +23,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
 	date = new Date();
 	absenceList: AbsencePeriod[] = [];
 	componentDestroyed$: Subject<boolean> = new Subject();
-
+	isLoading = false;
 	dialogSubscription: Subscription = new Subscription();
 	readonly days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 	readonly absenceTypesValues = Object.values(AbsenceTypes);
@@ -40,6 +40,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
 		public dialog: MatDialog,
 		private store: Store
 	) {
+		this.store.select(loadingSelector).subscribe(loading => {
+			this.isLoading = loading;
+		})
 		this.store
 			.select(absencesSelector)
 			.pipe(takeUntil(this.componentDestroyed$))

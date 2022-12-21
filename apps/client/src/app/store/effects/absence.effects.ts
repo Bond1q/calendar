@@ -1,29 +1,34 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { map, mergeMap, switchMap } from 'rxjs';
+import { concatMap, map, mergeMap, switchMap } from 'rxjs';
 import { AbsenceService } from '../../services/absence.service';
-import { loadAbsences, loadAbsencesSuccess, createAbsence, updateAbsence } from '../absence-reducer/absence.action';
+import { loadAbsences, loadAbsencesSuccess, createAbsence, updateAbsence, toggleLoading } from '../absence-reducer/absence.action';
 import { deleteAbsence } from './../absence-reducer/absence.action';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class AbsenceEffect {
-	constructor(private actions$: Actions, private absenceService: AbsenceService) { }
+	constructor(private actions$: Actions, private absenceService: AbsenceService, private store: Store) { }
 
 	loadAbsences$ = createEffect(() => {
 		return this.actions$.pipe(
 			ofType(loadAbsences),
-			mergeMap(() =>
-				this.absenceService.getAllAbsences().pipe(map((data) => loadAbsencesSuccess({ absences: data }))),
-			),
+			mergeMap(() => {
+				return this.absenceService.getAllAbsences().pipe(
+					map((data) => {
+						return loadAbsencesSuccess({ absences: data });
+					}),
+				);
+			}),
 		);
 	});
 
 	createdAbsence$ = createEffect(() => {
 		return this.actions$.pipe(
 			ofType(createAbsence),
-			mergeMap((action) =>
-				this.absenceService.createAbsence(action.absence).pipe(map(() => loadAbsences())),
-			),
+			mergeMap((action) => {
+				return this.absenceService.createAbsence(action.absence).pipe(map(() => loadAbsences()));
+			}),
 		);
 	});
 
