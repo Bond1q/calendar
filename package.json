@@ -10,7 +10,6 @@
     "postinstall": "node ./decorate-angular-cli.js",
     "start-client": "nx serve client",
     "start-server": "nx serve server"
-
   },
   "private": true,
   "dependencies": {
@@ -31,6 +30,7 @@
     "@nestjs/typeorm": "^9.0.1",
     "@ngrx/effects": "^15.0.0",
     "@ngrx/store": "^15.0.0",
+    "@ngrx/store-devtools": "^15.0.0",
     "@nrwl/angular": "^15.3.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.0",

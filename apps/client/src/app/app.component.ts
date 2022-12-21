@@ -1,10 +1,27 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { Store } from '@ngrx/store';
+import { loadingSelector } from './store/selectors/absence.selector';
+import { takeUntil, Subject } from 'rxjs';
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss'],
+	selector: 'app-root',
+	templateUrl: './app.component.html',
+	styleUrls: ['./app.component.scss'],
 })
-export class AppComponent {
-  title = 'calendar';
+export class AppComponent implements OnDestroy {
+	componentDestroyed$: Subject<boolean> = new Subject();
+	loading = false;
+	constructor(private store: Store) {
+		this.store
+			.select(loadingSelector)
+			.pipe(takeUntil(this.componentDestroyed$))
+			.subscribe((loading) => {
+				this.loading = loading;
+			});
+	}
+
+	ngOnDestroy(): void {
+		this.componentDestroyed$.next(true);
+		this.componentDestroyed$.complete();
+	}
 }

@@ -28,6 +28,9 @@ import { TruncatePipe } from './pipes/truncate.pipe';
 import { EffectsModule } from '@ngrx/effects';
 import { AbsenceEffect } from './store/effects/absence.effects';
 import { HttpClientModule } from '@angular/common/http';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
+import { FirstLetterCapitalizePipe } from './pipes/first-letter-capitalize.pipe';
 
 @NgModule({
 	declarations: [
@@ -37,6 +40,7 @@ import { HttpClientModule } from '@angular/common/http';
 		AbsencesComponent,
 		DayCountPipe,
 		TruncatePipe,
+		FirstLetterCapitalizePipe,
 		AbsenceCreatorComponent,
 		HeaderComponent,
 	],
@@ -58,8 +62,10 @@ import { HttpClientModule } from '@angular/common/http';
 		MatDividerModule,
 		MatExpansionModule,
 		HttpClientModule,
+		MatProgressSpinnerModule,
 		StoreModule.forRoot(reducers),
-		EffectsModule.forRoot([AbsenceEffect])
+		EffectsModule.forRoot([AbsenceEffect]),
+		StoreDevtoolsModule.instrument({ maxAge: 25 })
 	],
 	providers: [],
 	bootstrap: [AppComponent],

@@ -4,14 +4,11 @@
     <mat-expansion-panel *ngFor="let absenceType of absenceTypesValues">
       <mat-expansion-panel-header>
         <mat-panel-title>
-          <span
-            [ngClass]="{
+          <span [ngClass]="{
               sick: absenceType == AbsenceTypes.SICK,
               vacation: absenceType == AbsenceTypes.VACATION
-            }"
-            class="circle"
-          ></span>
-          {{ absenceType | titlecase }}
+            }" class="circle"></span>
+          {{ absenceType | firstLetterCapitalize }}
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div class="absence" *ngFor="let absence of absencesList[absenceType]">

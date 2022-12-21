@@ -1,11 +1,7 @@
 <h1 mat-dialog-title>Absence period</h1>
 <div mat-dialog-content>
   <h2 class="absence-title">What type of absence?</h2>
-  <mat-form-field
-    [formGroup]="absenceForm"
-    class="absence-type-form"
-    appearance="fill"
-  >
+  <mat-form-field [formGroup]="absenceForm" class="absence-type-form" appearance="fill">
     <mat-label>Type of absence</mat-label>
     <mat-select formControlName="absenceType" required>
       <mat-option [value]="option" *ngFor="let option of absenceTypesValues">{{
@@ -13,28 +9,16 @@
       }}</mat-option>
     </mat-select>
   </mat-form-field>
-  <mat-error *ngIf="absenceForm.hasError('incorrectTypeForPast')"
-    >You can only choose type "Sick" for the past</mat-error
-  >
+  <mat-error *ngIf="absenceForm.hasError('incorrectTypeForPast')">You can only choose type "Sick" for the past
+  </mat-error>
 
   <h2 class="absence-title">From - To</h2>
 
   <div class="wrap">
-    <mat-form-field
-      [formGroup]="absenceForm"
-      appearance="fill"
-      class="example-form-field"
-    >
+    <mat-form-field [formGroup]="absenceForm" appearance="fill" class="example-form-field">
       <mat-label>Choose a start date</mat-label>
-      <input
-        matInput
-        formControlName="dateStart"
-        [matDatepicker]="datepicker"
-      />
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="datepicker"
-      ></mat-datepicker-toggle>
+      <input matInput formControlName="dateStart" [matDatepicker]="datepicker" />
+      <mat-datepicker-toggle matIconSuffix [for]="datepicker"></mat-datepicker-toggle>
 
       <mat-datepicker #datepicker>
         <mat-datepicker-actions>
@@ -45,17 +29,10 @@
         </mat-datepicker-actions>
       </mat-datepicker>
     </mat-form-field>
-    <mat-form-field
-      [formGroup]="absenceForm"
-      appearance="fill"
-      class="example-form-field"
-    >
+    <mat-form-field [formGroup]="absenceForm" appearance="fill" class="example-form-field">
       <mat-label>Choose an end date</mat-label>
       <input matInput formControlName="dateEnd" [matDatepicker]="datepicker2" />
-      <mat-datepicker-toggle
-        matIconSuffix
-        [for]="datepicker2"
-      ></mat-datepicker-toggle>
+      <mat-datepicker-toggle matIconSuffix [for]="datepicker2"></mat-datepicker-toggle>
       <mat-datepicker #datepicker2>
         <mat-datepicker-actions>
           <button mat-button matDatepickerCancel>Cancel</button>
@@ -65,12 +42,8 @@
         </mat-datepicker-actions>
       </mat-datepicker>
     </mat-form-field>
-    <mat-error *ngIf="absenceForm.hasError('incorrectRange')"
-      >IncorrectRange</mat-error
-    >
-    <mat-error *ngIf="absenceForm.hasError('absencesOverlapped')"
-      >Absence overlapped</mat-error
-    >
+    <mat-error *ngIf="absenceForm.hasError('incorrectRange')">IncorrectRange</mat-error>
+    <mat-error *ngIf="absenceForm.hasError('absencesOverlapped')">Absence overlapped</mat-error>
   </div>
   <h2 class="absence-title">Comment:</h2>
   <form [formGroup]="absenceForm" class="example-form">
@@ -85,13 +58,7 @@
   <button mat-stroked-button (click)="onClose()" mat-flat-button color="basic">
     Cancel
   </button>
-  <button
-    [disabled]="buttonDisabled"
-    mat-button
-    (click)="onRequest()"
-    mat-flat-button
-    color="primary"
-  >
+  <button [disabled]="buttonDisabled" mat-button (click)="onRequest()" mat-flat-button color="primary">
     Request
   </button>
 </div>

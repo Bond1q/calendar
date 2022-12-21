@@ -1,14 +1,32 @@
 import { AbsenceReducer } from '../../types/types';
 import { createReducer, on } from '@ngrx/store';
-import { loadAbsencesSuccess } from './absence.action';
+import { loadAbsencesSuccess, toggleLoading, loadAbsences, createAbsence, updateAbsence, deleteAbsence } from './absence.action';
 
 const initialState: AbsenceReducer = {
 	absencePeriods: [],
+	loading: false
 };
 
 export const absenceReducer = createReducer(
 	initialState,
+	on(loadAbsences, (state) => {
+		return { ...state, loading: true }
+	}),
+	on(createAbsence, (state) => {
+		return { ...state, loading: true }
+	}),
+	on(updateAbsence, (state) => {
+		return { ...state, loading: true }
+	}),
+	on(deleteAbsence, (state) => {
+		return { ...state, loading: true }
+	}),
 	on(loadAbsencesSuccess, (state, action) => {
-		return { ...state, absencePeriods: action.absences }
-	})
+
+		return { ...state, absencePeriods: action.absences, loading: false };
+	}),
+	on(toggleLoading, (state, action) => {
+		return { ...state, loading: action.loading }
+	}),
+
 );

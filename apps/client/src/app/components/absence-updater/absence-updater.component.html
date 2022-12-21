@@ -1,7 +1,7 @@
 <h1 mat-dialog-title>Absence period</h1>
 <div mat-dialog-content>
   <h2 class="absence-title">Type of absence:</h2>
-  <p class="absence-field">{{ inputData.type | titlecase }}</p>
+  <p class="absence-field">{{ inputData.type | firstLetterCapitalize }}</p>
   <mat-divider class="divider-before-date"></mat-divider>
 
   <div class="wrap">
@@ -58,7 +58,7 @@
     >
   </div>
   <h2>Note:</h2>
-  <p class="absence-field">{{ inputData.comment | titlecase }}</p>
+  <p class="absence-field">{{ inputData.comment | firstLetterCapitalize }}</p>
 </div>
 <mat-divider class="divider-before-actions"></mat-divider>
 

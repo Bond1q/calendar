@@ -20,7 +20,7 @@
     <section (click)="$event.stopPropagation()" [formGroup]="toppings">
       <p *ngFor="let type of absenceTypesValues">
         <mat-checkbox formControlName="{{ type }}">{{
-          type | titlecase
+          type | firstLetterCapitalize
         }}</mat-checkbox>
       </p>
     </section>
@@ -38,7 +38,7 @@
         sick: absence.type == AbsenceTypes.SICK,
         vacation: absence.type == AbsenceTypes.VACATION
       }">
-      {{ absence.comment | truncate : 15 | titlecase}}
+      {{ absence.comment | truncate : 15 | firstLetterCapitalize}}
     </p>
   </div>
 </div>
