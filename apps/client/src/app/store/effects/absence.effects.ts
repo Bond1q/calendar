@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { concatMap, map, mergeMap, switchMap } from 'rxjs';
+import { catchError, concatMap, map, mergeMap, of, switchMap } from 'rxjs';
 import { AbsenceService } from '../../services/absence.service';
-import { loadAbsences, loadAbsencesSuccess, createAbsence, updateAbsence, toggleLoading } from '../absence-reducer/absence.action';
+import { loadAbsences, loadAbsencesSuccess, createAbsence, updateAbsence, toggleLoading, errorHandler } from '../absence-reducer/absence.action';
 import { deleteAbsence } from './../absence-reducer/absence.action';
 import { Store } from '@ngrx/store';
 
@@ -17,9 +17,10 @@ export class AbsenceEffect {
 				return this.absenceService.getAllAbsences().pipe(
 					map((data) => {
 						return loadAbsencesSuccess({ absences: data });
-					}),
+					},),
 				);
 			}),
+			catchError(error => of(errorHandler(error)))
 		);
 	});
 
@@ -29,6 +30,7 @@ export class AbsenceEffect {
 			mergeMap((action) => {
 				return this.absenceService.createAbsence(action.absence).pipe(map(() => loadAbsences()));
 			}),
+			catchError(error => of(errorHandler(error)))
 		);
 	});
 
@@ -40,8 +42,11 @@ export class AbsenceEffect {
 					dateStart: action.dateStart,
 					dateEnd: action.dateEnd,
 				};
-				return this.absenceService.updateAbsence(action.id, absence).pipe(map(() => loadAbsences()));
+				return this.absenceService.updateAbsence(action.id, absence).pipe(
+					map(() => loadAbsences()),
+				);
 			}),
+			catchError(error => of(errorHandler(error)))
 		);
 	});
 
@@ -51,6 +56,7 @@ export class AbsenceEffect {
 			mergeMap((action) => {
 				return this.absenceService.deleteAbsence(action.id).pipe(map(() => loadAbsences()));
 			}),
+			catchError(error => of(errorHandler(error)))
 		);
 	});
 }
