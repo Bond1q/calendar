@@ -9,5 +9,5 @@ export const absencesSelector = createSelector(
 
 export const loadingSelector = createSelector(
 	featureSelector,
-	(state) => state.isLoading
+	(state) => state.loading
 )

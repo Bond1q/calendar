@@ -12,5 +12,5 @@ export interface DateInfo {
 
 export interface AbsenceReducer {
 	absencePeriods: AbsencePeriod[];
-	isLoading: boolean;
+	loading: boolean;
 }

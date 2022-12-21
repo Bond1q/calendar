@@ -10,13 +10,13 @@ import { takeUntil, Subject } from 'rxjs';
 })
 export class AppComponent implements OnDestroy {
 	componentDestroyed$: Subject<boolean> = new Subject();
-	isLoading = false;
+	loading = false;
 	constructor(private store: Store) {
 		this.store
 			.select(loadingSelector)
 			.pipe(takeUntil(this.componentDestroyed$))
 			.subscribe((loading) => {
-				this.isLoading = loading;
+				this.loading = loading;
 			});
 	}
 

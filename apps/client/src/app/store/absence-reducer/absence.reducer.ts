@@ -4,29 +4,29 @@ import { loadAbsencesSuccess, toggleLoading, loadAbsences, createAbsence, update
 
 const initialState: AbsenceReducer = {
 	absencePeriods: [],
-	isLoading: false
+	loading: false
 };
 
 export const absenceReducer = createReducer(
 	initialState,
 	on(loadAbsences, (state) => {
-		return { ...state, isLoading: true }
+		return { ...state, loading: true }
 	}),
 	on(createAbsence, (state) => {
-		return { ...state, isLoading: true }
+		return { ...state, loading: true }
 	}),
 	on(updateAbsence, (state) => {
-		return { ...state, isLoading: true }
+		return { ...state, loading: true }
 	}),
 	on(deleteAbsence, (state) => {
-		return { ...state, isLoading: true }
+		return { ...state, loading: true }
 	}),
 	on(loadAbsencesSuccess, (state, action) => {
 
-		return { ...state, absencePeriods: action.absences, isLoading: false };
+		return { ...state, absencePeriods: action.absences, loading: false };
 	}),
 	on(toggleLoading, (state, action) => {
-		return { ...state, isLoading: action.isLoading }
+		return { ...state, loading: action.loading }
 	}),
 
 );

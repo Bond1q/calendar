@@ -27,6 +27,6 @@ export const loadAbsences = createAction(
 
 export const toggleLoading = createAction(
 	'[Absence] toggleLoading',
-	props<{ isLoading: boolean }>()
+	props<{ loading: boolean }>()
 )
 
