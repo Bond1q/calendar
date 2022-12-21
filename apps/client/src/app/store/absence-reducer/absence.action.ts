@@ -30,3 +30,7 @@ export const toggleLoading = createAction(
 	props<{ loading: boolean }>()
 )
 
+export const errorHandler = createAction(
+	'[Absence] error',
+	props<{ errorMessage: string }>()
+)
